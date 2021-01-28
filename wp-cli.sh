@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 echo 'WordPress Installer from WP-CLI by juanmacivico87'
 
 echo 'This is a local development or a production environment??'
