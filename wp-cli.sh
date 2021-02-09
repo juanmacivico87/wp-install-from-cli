@@ -30,9 +30,12 @@ echo 'Database has been created'
 # Download WordPress
 wp core download --locale=es_ES
 # Create wp-config.php
-wp config create --dbname="$DB_NAME" --dbuser="$DB_USER" --dbpass="$DB_PASSWORD" --dbhost="$DB_HOST:$DB_PORT" --dbcharset="$DB_CHARSET" --dbcollate="$DB_COLLATE" --dbprefix="$DB_PREFIX"
-wp config set WP_ENVIRONMENT_TYPE $WP_ENVIRONMENT_TYPE
+wp config create --dbname="$DB_NAME" --dbuser="$DB_USER" --dbpass="$DB_PASSWORD" --dbhost="$DB_HOST:$DB_PORT" --dbcharset="$DB_CHARSET" --dbcollate="$DB_COLLATE" --dbprefix="$DB_PREFIX" --extra-php <<PHP
+error_reporting( $PHP_ERROR_REPORTING );
+ini_set( 'display_errors', $PHP_DISPLAY_ERRORS );
+PHP
 
+wp config set WP_ENVIRONMENT_TYPE $WP_ENVIRONMENT_TYPE
 wp config set WP_HOME $WP_HOME
 wp config set WP_SITEURL $WP_SITEURL
 
@@ -43,11 +46,24 @@ wp config set SCRIPT_DEBUG $SCRIPT_DEBUG --raw
 wp config set WP_DISABLE_FATAL_ERROR_HANDLER $WP_DISABLE_FATAL_ERROR_HANDLER --raw
 wp config set IMPORT_DEBUG $IMPORT_DEBUG --raw
 
+if [ $WP_CACHE = false ]
+then
+    wp config set DISABLE_CACHE true --raw
+else
+    wp config set ENABLE_CACHE true --raw
+fi
+
 wp config set WP_CACHE $WP_CACHE --raw
 wp config set CONCATENATE_SCRIPTS $CONCATENATE_SCRIPTS --raw
 wp config set COMPRESS_CSS $COMPRESS_CSS --raw
 wp config set COMPRESS_SCRIPTS $COMPRESS_SCRIPTS --raw
 wp config set ENFORCE_GZIP $ENFORCE_GZIP --raw
+
+if [ $WP_ENVIRONMENT_TYPE != 'local' ]
+then
+    wp config set FORCE_SSL_LOGIN true
+    wp config set FORCE_SSL_ADMIN true
+fi
 
 wp config set AUTOMATIC_UPDATER_DISABLED $AUTOMATIC_UPDATER_DISABLED --raw
 wp config set DISALLOW_FILE_EDIT $DISALLOW_FILE_EDIT --raw
