@@ -1,9 +1,17 @@
 #!/usr/bin/env bash
-echo 'WordPress Installer from WP-CLI by juanmacivico87'
+echo -e '\033[1;34m ##################################################### \033[0m'
+echo -e '\033[1;34m # WordPress Installer from WP-CLI                   # \033[0m'
+echo -e '\033[1;34m #                                                   # \033[0m'
+echo -e '\033[1;34m # Author:   juanmacivico87                          # \033[0m'
+echo -e '\033[1;34m # Website:  https://www.juanmacivico87.com          # \033[0m'
+echo -e '\033[1;34m # GitHub:   https://www.github.com/juanmacivico87   # \033[0m'
+echo -e '\033[1;34m ##################################################### \033[0m'
+echo ''
 
-echo 'This is a local development or a production environment??'
-echo '1. LOCAL'
-echo '2. PRODUCTION'
+echo 'Please, select your environment:'
+echo ''
+echo '[1] LOCAL'
+echo '[2] PRODUCTION'
 read WP_ENVIRONMENT_TYPE_OPTION
 
 case $WP_ENVIRONMENT_TYPE_OPTION in
@@ -14,8 +22,11 @@ case $WP_ENVIRONMENT_TYPE_OPTION in
         WP_ENVIRONMENT_TYPE='production'
         ;;
     *)
-        echo 'Sorry, that is not a valid option'
-        sleep 5
+        echo ''
+        echo -e '\033[1;31m Sorry, that is not a valid option \033[0m'
+        echo ''
+        echo 'Please, press ENTER to exit . . .'
+        read CLOSE
         exit
 esac
 
@@ -23,18 +34,19 @@ cd "$(dirname "$0")"
 source "$WP_ENVIRONMENT_TYPE.config"
 cd ..
 
-# Create database
+echo -e '\033[1;35m Step 1: Create database \033[0m'
 mysql --user="$DB_USER" --password="$DB_PASSWORD" --execute="create database if not exists $DB_NAME character set $DB_CHARSET collate $DB_COLLATE;";
-echo 'Database has been created'
 
-# Download WordPress
+echo -e '\033[1;35m Step 2: Download WordPress \033[0m'
 wp core download --locale=es_ES
-# Create wp-config.php
+
+echo -e '\033[1;35m Step 3: Create wp-config file \033[0m'
 wp config create --dbname="$DB_NAME" --dbuser="$DB_USER" --dbpass="$DB_PASSWORD" --dbhost="$DB_HOST:$DB_PORT" --dbcharset="$DB_CHARSET" --dbcollate="$DB_COLLATE" --dbprefix="$DB_PREFIX" --extra-php <<PHP
 error_reporting( $PHP_ERROR_REPORTING );
 ini_set( 'display_errors', $PHP_DISPLAY_ERRORS );
 PHP
 
+echo -e '\033[1;35m Step 4: Set constants and variables of wp-config file \033[0m'
 wp config set WP_ENVIRONMENT_TYPE $WP_ENVIRONMENT_TYPE
 wp config set WP_HOME $WP_HOME
 wp config set WP_SITEURL $WP_SITEURL
@@ -76,7 +88,12 @@ wp config set IMAGE_EDIT_OVERWRITE $IMAGE_EDIT_OVERWRITE --raw
 
 wp config set WP_ALLOW_REPAIR $WP_ALLOW_REPAIR --raw
 wp config set DISABLE_NAG_NOTICES $DISABLE_NAG_NOTICES --raw
-# Install WordPress
+
+echo -e '\033[1;35m Step 4: Install WordPress \033[0m'
 wp core install --url="$WP_HOME" --title="$TITLE" --admin_user="$ADMIN_USER" --admin_password="$ADMIN_PASSWORD" --admin_email="$ADMIN_EMAIL"
 
-sleep 5
+echo ''
+echo -e '\033[1;32m WordPress installed successfully!!! \033[0m'
+echo ''
+echo 'Please, press ENTER to exit . . .'
+read CLOSE
