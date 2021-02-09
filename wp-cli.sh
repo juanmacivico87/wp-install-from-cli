@@ -89,8 +89,61 @@ wp config set IMAGE_EDIT_OVERWRITE $IMAGE_EDIT_OVERWRITE --raw
 wp config set WP_ALLOW_REPAIR $WP_ALLOW_REPAIR --raw
 wp config set DISABLE_NAG_NOTICES $DISABLE_NAG_NOTICES --raw
 
-echo -e '\033[1;35m Step 4: Install WordPress \033[0m'
+echo -e '\033[1;35m Step 5: Install WordPress \033[0m'
 wp core install --url="$WP_HOME" --title="$TITLE" --admin_user="$ADMIN_USER" --admin_password="$ADMIN_PASSWORD" --admin_email="$ADMIN_EMAIL"
+
+echo -e '\033[1;35m Step 6: Set options \033[0m'
+wp option update blogdescription "$BLOG_DESCRIPTION"
+wp option update start_of_week $START_OF_WEEK
+wp option update default_role "$DEFAULT_ROLE"
+wp option update WPLANG "$WPLANG"
+wp option update timezone_string "$TIMEZONE_STRING"
+wp option update date_format "$DATE_FORMAT"
+wp option update time_format "$TIME_FORMAT"
+
+wp option update show_on_front "$SHOW_ON_FRONT"
+
+if [ $SHOW_ON_FRONT = 'page' ]
+then
+    wp option update page_on_front "$(wp post create --post_type=page --post_title='Home' --post_status='publish' --porcelain)"
+    wp option update page_for_posts "$(wp post create --post_type=page --post_title='Blog' --post_status='publish' --porcelain)"
+fi
+
+wp option update posts_per_page $POSTS_PER_PAGE
+
+if [ $WP_ENVIRONMENT_TYPE = 'local' ]
+then
+    wp option update blog_public false
+else
+    wp option update blog_public true
+fi
+
+wp option update default_pingback_flag $DEFAULT_PINGBACK_FLAG
+wp option update default_ping_status "$DEFAULT_PING_STATUS"
+wp option update default_comment_status "$DEFAULT_COMMENT_STATUS"
+wp option update require_name_email $REQUIRE_NAME_EMAIL
+wp option update comment_registration $COMMENT_REGISTRATION
+wp option update close_comments_for_old_posts $CLOSE_COMMENTS_FOR_OLD_POSTS
+wp option update show_comments_cookies_opt_in $SHOW_COMMENTS_COOKIES_OPT_IN
+wp option update thread_comments $THREAD_COMMENTS
+wp option update thread_comments_depth $THREAD_COMMENTS_DEPTH
+wp option update page_comments $PAGE_COMMENTS
+wp option update comments_notify $COMMENTS_NOTIFY
+wp option update moderation_notify $MODERATION_NOTIFY
+wp option update comment_moderation $COMMENT_MODERATION
+wp option update comment_previously_approved $COMMENT_PREVIOUSLY_APPROVED
+wp option update show_avatars $SHOW_AVATARS
+
+wp option update thumbnail_size_w $THUMBNAIL_SIZE_W
+wp option update thumbnail_size_h $THUMBNAIL_SIZE_H
+wp option update medium_size_w $MEDIUM_SIZE_W
+wp option update medium_size_h $MEDIUM_SIZE_H
+wp option update large_size_w $LARGE_SIZE_W
+wp option update large_size_h $LARGE_SIZE_H
+wp option update thumbnail_crop $THUMBNAIL_CROP
+wp option update uploads_use_yearmonth_folders $UPLOADS_USE_YEARMONTH_FOLDERS
+
+wp option update permalink_structure "$PERMALINK_STRUCTURE"
 
 echo ''
 echo -e '\033[1;32m WordPress installed successfully!!! \033[0m'
