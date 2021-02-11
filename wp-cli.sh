@@ -34,18 +34,22 @@ cd "$(dirname "$0")"
 source "$WP_ENVIRONMENT_TYPE.config"
 cd ..
 
+# Create database
 echo -e '\033[1;35m Step 1: Create database \033[0m'
 mysql --user="$DB_USER" --password="$DB_PASSWORD" --execute="create database if not exists $DB_NAME character set $DB_CHARSET collate $DB_COLLATE;";
 
+# Download WordPress
 echo -e '\033[1;35m Step 2: Download WordPress \033[0m'
 wp core download --locale=es_ES
 
+# Create wp-config file'
 echo -e '\033[1;35m Step 3: Create wp-config file \033[0m'
 wp config create --dbname="$DB_NAME" --dbuser="$DB_USER" --dbpass="$DB_PASSWORD" --dbhost="$DB_HOST:$DB_PORT" --dbcharset="$DB_CHARSET" --dbcollate="$DB_COLLATE" --dbprefix="$DB_PREFIX" --extra-php <<PHP
 error_reporting( $PHP_ERROR_REPORTING );
 ini_set( 'display_errors', $PHP_DISPLAY_ERRORS );
 PHP
 
+# Set constants and variables of wp-config file
 echo -e '\033[1;35m Step 4: Set constants and variables of wp-config file \033[0m'
 wp config set WP_ENVIRONMENT_TYPE $WP_ENVIRONMENT_TYPE
 wp config set WP_HOME $WP_HOME
@@ -89,9 +93,11 @@ wp config set IMAGE_EDIT_OVERWRITE $IMAGE_EDIT_OVERWRITE --raw
 wp config set WP_ALLOW_REPAIR $WP_ALLOW_REPAIR --raw
 wp config set DISABLE_NAG_NOTICES $DISABLE_NAG_NOTICES --raw
 
+# Install WordPress
 echo -e '\033[1;35m Step 5: Install WordPress \033[0m'
 wp core install --url="$WP_HOME" --title="$TITLE" --admin_user="$ADMIN_USER" --admin_password="$ADMIN_PASSWORD" --admin_email="$ADMIN_EMAIL"
 
+# Set options
 echo -e '\033[1;35m Step 6: Set options \033[0m'
 wp option update blogdescription "$BLOG_DESCRIPTION"
 wp option update start_of_week $START_OF_WEEK
@@ -144,6 +150,11 @@ wp option update thumbnail_crop $THUMBNAIL_CROP
 wp option update uploads_use_yearmonth_folders $UPLOADS_USE_YEARMONTH_FOLDERS
 
 wp option update permalink_structure "$PERMALINK_STRUCTURE"
+
+# Remove «Hello Dolly»
+echo -e '\033[1;35m Step 7: Remove «Hello Dolly» \033[0m'
+wp plugin deactivate hello
+wp plugin delete hello
 
 echo ''
 echo -e '\033[1;32m WordPress installed successfully!!! \033[0m'
