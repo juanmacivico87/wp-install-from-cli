@@ -161,6 +161,27 @@ echo -e '\033[1;35m Step 8: Remove «Hello Dolly» plugin \033[0m'
 wp plugin deactivate hello
 wp plugin delete hello
 
+# Download and install required plugins
+echo -e '\033[1;35m Step 9: Download and install required plugins \033[0m'
+wp plugin install query-monitor --activate
+echo ''
+
+if [ $WP_ENVIRONMENT_TYPE = 'local' ]
+then
+    wp plugin install stream
+    echo ''
+    wp plugin install simply-show-hooks --activate
+else
+    wp plugin install stream --activate
+fi
+
+if [ $ACF_PRO_KEY != false ]
+then
+    echo ''
+    wp plugin install "http://connect.advancedcustomfields.com/index.php?p=pro&a=download&k=$ACF_PRO_KEY" --activate
+    wp eval "acf_pro_update_license( '$ACF_PRO_KEY' );"
+fi
+
 echo ''
 echo -e '\033[1;32m WordPress installed successfully!!! \033[0m'
 echo ''
