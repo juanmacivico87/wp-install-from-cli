@@ -97,8 +97,13 @@ wp config set DISABLE_NAG_NOTICES $DISABLE_NAG_NOTICES --raw
 echo -e '\033[1;35m Step 5: Install WordPress \033[0m'
 wp core install --url="$WP_HOME" --title="$TITLE" --admin_user="$ADMIN_USER" --admin_password="$ADMIN_PASSWORD" --admin_email="$ADMIN_EMAIL"
 
+# Remove «Hello World» post and «Example» page
+echo -e '\033[1;35m Step 6: Remove «Hello World» post and «Example» page \033[0m'
+wp post delete 1 --force
+wp post delete 2 --force
+
 # Set options
-echo -e '\033[1;35m Step 6: Set options \033[0m'
+echo -e '\033[1;35m Step 7: Set options \033[0m'
 wp option update blogdescription "$BLOG_DESCRIPTION"
 wp option update start_of_week $START_OF_WEEK
 wp option update default_role "$DEFAULT_ROLE"
@@ -151,8 +156,8 @@ wp option update uploads_use_yearmonth_folders $UPLOADS_USE_YEARMONTH_FOLDERS
 
 wp option update permalink_structure "$PERMALINK_STRUCTURE"
 
-# Remove «Hello Dolly»
-echo -e '\033[1;35m Step 7: Remove «Hello Dolly» \033[0m'
+# Remove «Hello Dolly» plugin
+echo -e '\033[1;35m Step 8: Remove «Hello Dolly» plugin \033[0m'
 wp plugin deactivate hello
 wp plugin delete hello
 
