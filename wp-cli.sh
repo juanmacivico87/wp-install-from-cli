@@ -186,11 +186,12 @@ fi
 echo -e '\033[1;35m Step 10: Remove inactive themes \033[0m'
 wp theme delete --all
 
-# Download wptheme-sample theme
-echo -e '\033[1;35m Step 11: Download wptheme-sample theme \033[0m'
+# Download and rename wptheme-sample theme
+echo -e '\033[1;35m Step 11: Download and rename wptheme-sample theme \033[0m'
 cd $(wp theme path)
 git clone https://github.com/juanmacivico87/wptheme-sample.git
-cd wptheme-sample
+mv wptheme-sample $THEME_SLUG
+cd $THEME_SLUG
 rm -r -f .git
 rm -f readme.md
 cd "$(wp eval 'echo get_home_path();')"
