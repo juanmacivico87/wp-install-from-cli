@@ -192,10 +192,15 @@ cd $(wp theme path)
 git clone https://github.com/juanmacivico87/wptheme-sample.git
 mv wptheme-sample $THEME_SLUG
 cd $THEME_SLUG
+
 rm -r -f .git
 rm -f readme.md
+
 grep -rl "wptheme-sample" | xargs sed -i "s/wptheme-sample/$THEME_SLUG/g"
 grep -rl "wptheme/sample" | xargs sed -i "s/wptheme\/sample/$COMPOSER_VENDOR_NAME\/$THEME_SLUG/g"
+grep -rl "PrefixConfig" | xargs sed -i "s/PrefixConfig/$THEME_CONFIG_NAMESPACE/g"
+grep -rl "PrefixSource" | xargs sed -i "s/PrefixSource/$THEME_SOURCE_NAMESPACE/g"
+
 cd "$(wp eval 'echo get_home_path();')"
 
 echo ''
