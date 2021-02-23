@@ -186,6 +186,15 @@ fi
 echo -e '\033[1;35m Step 10: Remove inactive themes \033[0m'
 wp theme delete --all
 
+# Download wptheme-sample theme
+echo -e '\033[1;35m Step 11: Download wptheme-sample theme \033[0m'
+cd $(wp theme path)
+git clone https://github.com/juanmacivico87/wptheme-sample.git
+cd wptheme-sample
+rm -r -f .git
+cd "$(wp eval 'echo get_home_path();')"
+mkdir pepito
+
 echo ''
 echo -e '\033[1;32m WordPress installed successfully!!! \033[0m'
 echo ''
