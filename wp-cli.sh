@@ -193,7 +193,6 @@ git clone https://github.com/juanmacivico87/wptheme-sample.git
 cd wptheme-sample
 rm -r -f .git
 cd "$(wp eval 'echo get_home_path();')"
-mkdir pepito
 
 echo ''
 echo -e '\033[1;32m WordPress installed successfully!!! \033[0m'
