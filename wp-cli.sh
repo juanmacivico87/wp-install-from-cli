@@ -182,6 +182,10 @@ then
     wp eval "acf_pro_update_license( '$ACF_PRO_KEY' );"
 fi
 
+# Remove inactive themes
+echo -e '\033[1;35m Step 10: Remove inactive themes \033[0m'
+wp theme delete --all
+
 echo ''
 echo -e '\033[1;32m WordPress installed successfully!!! \033[0m'
 echo ''
