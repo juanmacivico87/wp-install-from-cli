@@ -192,6 +192,7 @@ cd $(wp theme path)
 git clone https://github.com/juanmacivico87/wptheme-sample.git
 cd wptheme-sample
 rm -r -f .git
+rm -f readme.md
 cd "$(wp eval 'echo get_home_path();')"
 
 echo ''
