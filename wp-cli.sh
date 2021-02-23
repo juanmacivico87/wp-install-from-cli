@@ -195,6 +195,7 @@ cd $THEME_SLUG
 rm -r -f .git
 rm -f readme.md
 grep -rl "wptheme-sample" | xargs sed -i "s/wptheme-sample/$THEME_SLUG/g"
+grep -rl "wptheme/sample" | xargs sed -i "s/wptheme\/sample/$COMPOSER_VENDOR_NAME\/$THEME_SLUG/g"
 cd "$(wp eval 'echo get_home_path();')"
 
 echo ''
