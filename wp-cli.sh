@@ -186,14 +186,32 @@ fi
 echo -e '\033[1;35m Step 10: Remove inactive themes \033[0m'
 wp theme delete --all
 
-# Download wptheme-sample theme
-echo -e '\033[1;35m Step 11: Download wptheme-sample theme \033[0m'
+# Download and rename wptheme-sample theme
+echo -e '\033[1;35m Step 11: Download and rename wptheme-sample theme \033[0m'
 cd $(wp theme path)
 git clone https://github.com/juanmacivico87/wptheme-sample.git
-cd wptheme-sample
+mv wptheme-sample $THEME_SLUG
+cd $THEME_SLUG
+
 rm -r -f .git
 rm -f readme.md
+
+grep -rl "{{ theme_name }}" | xargs sed -i "s/{{ theme_name }}/$THEME_NAME/g"
+grep -rl "{{ theme_description }}" | xargs sed -i "s/{{ theme_description }}/$THEME_DESCRIPTION/g"
+grep -rl "{{ theme_uri }}" | xargs sed -i "s/{{ theme_uri }}/$THEME_URI/g"
+grep -rl "{{ theme_author }}" | xargs sed -i "s/{{ theme_author }}/$THEME_AUTHOR/g"
+grep -rl "{{ theme_author_uri }}" | xargs sed -i "s/{{ theme_author_uri }}/$THEME_AUTHOR_URI/g"
+grep -rl "wptheme-sample" | xargs sed -i "s/wptheme-sample/$THEME_SLUG/g"
+grep -rl "wptheme/sample" | xargs sed -i "s/wptheme\/sample/$COMPOSER_VENDOR_NAME\/$THEME_SLUG/g"
+grep -rl "PrefixConfig" | xargs sed -i "s/PrefixConfig/$THEME_CONFIG_NAMESPACE/g"
+grep -rl "PrefixSource" | xargs sed -i "s/PrefixSource/$THEME_SOURCE_NAMESPACE/g"
+grep -rl "\$prefix_" | xargs sed -i "s/\$prefix_/\$$THEME_VARS_PREFIX/g"
+grep -rl "PREFIX_" | xargs sed -i "s/PREFIX_/$THEME_CONSTANTS_PREFIX/g"
+
+composer install
+
 cd "$(wp eval 'echo get_home_path();')"
+wp theme activate $THEME_SLUG
 
 echo ''
 echo -e '\033[1;32m WordPress installed successfully!!! \033[0m'
