@@ -196,6 +196,11 @@ cd $THEME_SLUG
 rm -r -f .git
 rm -f readme.md
 
+grep -rl "{{ theme_name }}" | xargs sed -i "s/{{ theme_name }}/$THEME_NAME/g"
+grep -rl "{{ theme_description }}" | xargs sed -i "s/{{ theme_description }}/$THEME_DESCRIPTION/g"
+grep -rl "{{ theme_uri }}" | xargs sed -i "s/{{ theme_uri }}/$THEME_URI/g"
+grep -rl "{{ theme_author }}" | xargs sed -i "s/{{ theme_author }}/$THEME_AUTHOR/g"
+grep -rl "{{ theme_author_uri }}" | xargs sed -i "s/{{ theme_author_uri }}/$THEME_AUTHOR_URI/g"
 grep -rl "wptheme-sample" | xargs sed -i "s/wptheme-sample/$THEME_SLUG/g"
 grep -rl "wptheme/sample" | xargs sed -i "s/wptheme\/sample/$COMPOSER_VENDOR_NAME\/$THEME_SLUG/g"
 grep -rl "PrefixConfig" | xargs sed -i "s/PrefixConfig/$THEME_CONFIG_NAMESPACE/g"
