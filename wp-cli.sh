@@ -201,6 +201,7 @@ grep -rl "wptheme/sample" | xargs sed -i "s/wptheme\/sample/$COMPOSER_VENDOR_NAM
 grep -rl "PrefixConfig" | xargs sed -i "s/PrefixConfig/$THEME_CONFIG_NAMESPACE/g"
 grep -rl "PrefixSource" | xargs sed -i "s/PrefixSource/$THEME_SOURCE_NAMESPACE/g"
 grep -rl "\$prefix_" | xargs sed -i "s/\$prefix_/\$$THEME_VARS_PREFIX/g"
+grep -rl "PREFIX_" | xargs sed -i "s/PREFIX_/$THEME_CONSTANTS_PREFIX/g"
 
 cd "$(wp eval 'echo get_home_path();')"
 
