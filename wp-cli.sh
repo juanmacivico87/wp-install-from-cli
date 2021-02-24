@@ -208,7 +208,10 @@ grep -rl "PrefixSource" | xargs sed -i "s/PrefixSource/$THEME_SOURCE_NAMESPACE/g
 grep -rl "\$prefix_" | xargs sed -i "s/\$prefix_/\$$THEME_VARS_PREFIX/g"
 grep -rl "PREFIX_" | xargs sed -i "s/PREFIX_/$THEME_CONSTANTS_PREFIX/g"
 
+composer install
+
 cd "$(wp eval 'echo get_home_path();')"
+wp theme activate $THEME_SLUG
 
 echo ''
 echo -e '\033[1;32m WordPress installed successfully!!! \033[0m'
